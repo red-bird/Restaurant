@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQL95Dialect
+      jdbc:
+        time_zone: ${TZ:Europe/Moscow}
+      ddl-auto: ${SCHEMA_INIT:update}
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DB:restaurant}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:0000}
+  session:
+    jdbc:
+      initialize-schema: always
+      table-name: spring_session
+#  mail:
+#    protocol: smtp
+#    host: smtp.gmail.com
+#    port: 587
+#    username: ${EMAIL}
+#    #env variable
+#    password: ${EMAIL_PASSWORD}
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
