@@ -37,7 +37,7 @@ public class AdminFoodController {
         List<Food> foodList = foodService.findAll();
         model.addAttribute("foodList", foodList);
         log.info("findAllFood() output: " + foodList);
-        return "foodAdmin";
+        return "food";
     }
 
     @PostMapping
