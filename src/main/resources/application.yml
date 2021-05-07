@@ -13,6 +13,8 @@ spring:
     jdbc:
       initialize-schema: always
       table-name: spring_session
+  freemarker:
+    expose-request-attributes: true
 #  mail:
 #    protocol: smtp
 #    host: smtp.gmail.com

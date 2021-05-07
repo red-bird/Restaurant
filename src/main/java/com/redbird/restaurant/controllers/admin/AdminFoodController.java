@@ -3,8 +3,10 @@ package com.redbird.restaurant.controllers.admin;
 import com.redbird.restaurant.models.Food;
 import com.redbird.restaurant.services.FoodService;
 import lombok.extern.slf4j.Slf4j;
+import org.dom4j.rule.Mode;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +25,9 @@ public class AdminFoodController {
     }
 
     @GetMapping
-    public String findAllFood(Map<String, Object> model) {
+    public String findAllFood(Model model) {
         List<Food> foodList = foodService.findAll();
-        model.put("foodList", foodList);
+        model.addAttribute("foodList", foodList);
         log.info("findAllFood() output: " + foodList);
         return "foodAdmin";
     }
@@ -43,7 +45,7 @@ public class AdminFoodController {
         log.info("saveFood() input: " + food);
         food = foodService.save(food);
         log.info("saveFood() output: " + food);
-        return "redirect:/food";
+        return "redirect:/food/admin";
     }
 
     @DeleteMapping("/{id}")
@@ -51,6 +53,6 @@ public class AdminFoodController {
         log.info("deleteFood() input: " + id);
         deleteFood(id);
         log.info("deleteFood() " + id + "success");
-        return "redirect:/food";
+        return "redirect:/food/admin";
     }
 }
