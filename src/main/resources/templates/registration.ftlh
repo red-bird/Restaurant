@@ -2,8 +2,6 @@
 <#import "components/login.ftlh" as l>
 
 <@c.page>
-    Регистрация
-    ${message?isExists}
-    <@l.login "/registration" />
-    <a href="/login">Уже есть аккаунт?</a>
+    ${message?ifExists}
+    <@l.login "/registration" true />
 </@c.page>

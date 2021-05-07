@@ -2,7 +2,5 @@
 <#import "components/login.ftlh" as l>
 
 <@c.page>
-    Авторизация
-    <@l.login "/login" />
-    <a href="/registration">Регистрация</a>
+    <@l.login "/login" false />
 </@c.page>
