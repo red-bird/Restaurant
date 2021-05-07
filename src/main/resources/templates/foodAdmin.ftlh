@@ -3,6 +3,5 @@
 
 <@c.page>
     <@f.send />
-    Меню:
     <@f.menu />
 </@c.page>

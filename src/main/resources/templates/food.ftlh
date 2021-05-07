@@ -2,6 +2,5 @@
 <#import "components/food.ftlh" as f>
 
 <@c.page>
-Меню:
 <@f.menu />
 </@c.page>

@@ -36,6 +36,10 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    public boolean isAdmin() {
+        return roles.contains(Role.ADMIN);
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return active;

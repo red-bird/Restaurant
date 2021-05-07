@@ -1,4 +1,5 @@
 <#macro menu>
+    <div>Меню:</div>
     <hr>
     <#list foodList as food>
         <div><b>${food.name}</b></div>
