@@ -18,6 +18,7 @@ public class Food {
     private String type;
     private String description;
     private Double price;
+    private String filename;
     @ManyToMany(mappedBy = "foods", fetch = FetchType.LAZY)
     private Set<Order> orders;
 }

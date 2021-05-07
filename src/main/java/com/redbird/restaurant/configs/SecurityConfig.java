@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors().disable()
-                .authorizeRequests().antMatchers("/","/food","/login","/logout","/registration").permitAll()
+                .authorizeRequests().antMatchers("/","/food","/login","/logout","/registration", "/static/**").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/")
                 .and().rememberMe()

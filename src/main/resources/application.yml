@@ -1,3 +1,6 @@
+upload:
+  path: ${UPLOAD_PATH:static}
+
 spring:
   jpa:
     hibernate:

@@ -3,14 +3,18 @@ package com.redbird.restaurant.controllers.admin;
 import com.redbird.restaurant.models.Food;
 import com.redbird.restaurant.services.FoodService;
 import lombok.extern.slf4j.Slf4j;
-import org.dom4j.rule.Mode;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -22,6 +26,19 @@ public class AdminFoodController {
 
     public AdminFoodController(FoodService foodService) {
         this.foodService = foodService;
+    }
+
+    @Value("${upload.path}")
+    private String uploadPath;
+
+    private String truePath;
+
+    String path = System.getProperty("user.dir").replace('\\', '/') + "/src/main/resources/";
+    @PostConstruct
+    public void init() {
+        String path = System.getProperty("user.dir")
+                .replace('\\', '/') + "/src/main/resources/";
+        truePath = path + uploadPath + '/';
     }
 
     @GetMapping
@@ -36,8 +53,29 @@ public class AdminFoodController {
     public String saveFood(@RequestParam String name,
                            @RequestParam String type,
                            @RequestParam String description,
-                           @RequestParam Double price) {
+                           @RequestParam Double price,
+                           @RequestParam("file") MultipartFile file)
+    {
         Food food = new Food();
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(uploadPath);
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + '.' + file.getOriginalFilename();
+
+            try {
+                file.transferTo(new File(path + uploadPath + '/' + resultFilename));
+            }
+            catch (IOException e) {
+                log.error(e.getMessage());
+            }
+
+            food.setFilename(resultFilename);
+        }
         food.setName(name);
         food.setType(type);
         food.setDescription(description);
