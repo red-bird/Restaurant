@@ -30,16 +30,7 @@ public class AdminFoodController {
 
     @Value("${upload.path}")
     private String uploadPath;
-
-    private String truePath;
-
-    String path = System.getProperty("user.dir").replace('\\', '/') + "/src/main/resources/";
-    @PostConstruct
-    public void init() {
-        String path = System.getProperty("user.dir")
-                .replace('\\', '/') + "/src/main/resources/";
-        truePath = path + uploadPath + '/';
-    }
+    private String path = System.getProperty("user.dir").replace('\\', '/') + "/src/main/resources/";
 
     @GetMapping
     public String findAllFood(Model model) {
@@ -68,7 +59,7 @@ public class AdminFoodController {
             String resultFilename = uuidFile + '.' + file.getOriginalFilename();
 
             try {
-                file.transferTo(new File(path + uploadPath + '/' + resultFilename));
+                file.transferTo(new File(path + uploadPath + "/img/" + resultFilename));
             }
             catch (IOException e) {
                 log.error(e.getMessage());

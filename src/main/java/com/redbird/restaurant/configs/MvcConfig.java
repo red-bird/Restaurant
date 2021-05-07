@@ -20,7 +20,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void init() {
         String path = System.getProperty("user.dir")
                 .replace('\\', '/') + "/src/main/resources/";
-        truePath = '/' + path + uploadPath + '/';
+        truePath = '/' + path + uploadPath + "/img/";
     }
 
     public void addViewControllers(ViewControllerRegistry registry) {
