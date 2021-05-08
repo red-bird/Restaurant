@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ресторан</title>
+    <link rel="icon" href="/img/special/logo.png"  type="image/icon type">
 <#--    <link rel="stylesheet" href="/static/style.css">-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 

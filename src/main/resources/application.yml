@@ -18,16 +18,17 @@ spring:
       table-name: spring_session
   freemarker:
     expose-request-attributes: true
-#  mail:
-#    protocol: smtp
-#    host: smtp.gmail.com
-#    port: 587
-#    username: ${EMAIL}
-#    #env variable
-#    password: ${EMAIL_PASSWORD}
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
+  mail:
+    active_url: ${ACTIVE_URL:http://localhost:8080}
+    protocol: smtp
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL:test@mail.ru}
+    #env variable
+    password: ${EMAIL_PASSWORD:0000}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

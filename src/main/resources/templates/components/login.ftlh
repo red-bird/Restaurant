@@ -17,11 +17,18 @@
                 <input type="password" name="password" class="form-control" placeholder="Пароль" />
             </div>
         </div>
+        <#if isRegisterForm>
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label"> Пароль : </label>
+            <div class="col-sm-6">
+                <input type="email" name="email" class="form-control" placeholder="Почта" />
+            </div>
+        </div>
+        </#if>
         <div class="form-group form-check my-2">
             <input type="checkbox" class="form-check-input">
             <label class="form-check-label" for="rememberMe">Запомнить меня</label>
         </div>
-<#--        <div><label> Password: <input type="password" name="password"/> </label></div>-->
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div><button type="submit" class="btn btn-primary mb-3">
                 <#if isRegisterForm>Зарегестрироваться<#else>Войти</#if>

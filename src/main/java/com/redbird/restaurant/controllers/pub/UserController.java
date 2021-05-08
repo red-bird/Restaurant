@@ -6,13 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Map;
-
 @Controller
-@RequestMapping("/registration")
+@RequestMapping
 public class UserController {
 
     private final UserService userService;
@@ -22,20 +21,31 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/registration")
     public String registration() {
         return "registration";
     }
 
-    @PostMapping
+    @PostMapping("/registration")
     public String addUser(User user, Model model) {
-        User res = userService.findByUsername(user.getUsername());
-        if (res != null) {
+        user = userService.saveUser(user);
+        if (user == null) {
             model.addAttribute("message", "User exists!");
             return "registration";
         }
-        userService.saveUser(user);
         return "redirect:/login";
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activate(@PathVariable String code, Model model) {
+        boolean isActivated = userService.activateUser(code);
+
+        if (isActivated) {
+            model.addAttribute("message", "Пользователь был успешно активирован");
+        } else {
+            model.addAttribute("message", "Активационный код не действителен");
+        }
+        return "login";
     }
 
 

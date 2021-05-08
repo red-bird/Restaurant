@@ -3,19 +3,23 @@ package com.redbird.restaurant.servicesImpl;
 import com.redbird.restaurant.models.Role;
 import com.redbird.restaurant.models.User;
 import com.redbird.restaurant.repositories.UserRepository;
+import com.redbird.restaurant.services.MailService;
 import com.redbird.restaurant.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -24,6 +28,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
+
+    @Value("${spring.mail.active_url}")
+    private String url;
 
     @PostConstruct
     public void initAdmin() {
@@ -45,9 +53,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.mailService = mailService;
     }
 
     @Override
@@ -62,15 +71,51 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) {
-        user.setActive(true);
+        User res = findByUsername(user.getUsername());
+        if (res != null) {
+            log.info("user " + user.getUsername() + "exists");
+            return null;
+        }
         user.setRoles(Collections.singleton(Role.USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        user.setActivationCode(UUID.randomUUID().toString());
+
+        User save = userRepository.save(user);
+
+        if (StringUtils.hasText(save.getEmail())) {
+            String message = String.format(
+                    "Спасибо %s что выбрали нас!\n" +
+                            "Осталось подтвердить аккаунт чтобы получить доступ ко всем функциям сайта\n" +
+                            "Для активации нужно перейти по этой ссылке: %s/activate/%s" +
+                            "\nЕсли вы не регистрировались на сайте, просто проигнорирйте письмо.",
+                    save.getUsername(), url, save.getActivationCode()
+            );
+            mailService.send(save.getEmail(), "Активация аккаунта", message);
+            log.info("mail has been sent to " + save.getEmail());
+        }
+
+        return save;
     }
 
     @Override
     public User updateUser(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+
+        if (user == null) {
+            return false;
+        }
+
+        user.setActivationCode(null);
+        user.setActive(true);
+
+        userRepository.save(user);
+
+        return true;
     }
 
     @Override
