@@ -28,9 +28,15 @@
                 </#if>
             </ul>
 
-            <div class="navbar-text mr-3">${name}</div>
-            <#if name != "Гость">
+            <#if user??>
+                <div class="navbar-text mr-3">
+                    <a class="nav-link" href="/users/profile">${name}</a>
+                </div>
                 <@l.logout />
+            <#else>
+                <div class="navbar-text mr-3">
+                    <a class="nav-link" href="/login">Войти</a>
+                </div>
             </#if>
         </div>
     </div>

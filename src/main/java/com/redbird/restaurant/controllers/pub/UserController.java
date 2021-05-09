@@ -3,12 +3,10 @@ package com.redbird.restaurant.controllers.pub;
 import com.redbird.restaurant.models.User;
 import com.redbird.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping
@@ -48,5 +46,29 @@ public class UserController {
         return "login";
     }
 
+    @GetMapping("users/profile")
+    public String getProfile(Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+
+        return "profile";
+    }
+
+    @PostMapping("users/profile")
+    public String updateProfile(
+            @AuthenticationPrincipal User user,
+            @RequestParam String password,
+            @RequestParam String email,
+            Model model
+    ) {
+        boolean res = userService.updateProfile(user, password, email);
+        if (res) {
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("email", user.getEmail());
+            model.addAttribute("message", "Профиль был изменен");
+            return "profile";
+        }
+        return "redirect:/users/profile";
+    }
 
 }

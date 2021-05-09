@@ -33,24 +33,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Value("${spring.mail.active_url}")
     private String url;
 
-    @PostConstruct
-    public void initAdmin() {
-        if (findByUsername("admin") != null) {
-            log.info("Admin credentials has been created\n" +
-                    "username: admin\n" +
-                    "password: admin");
-            return;
-        }
-        User admin = new User();
-        admin.setActive(true);
-        admin.setPassword(passwordEncoder.encode("admin"));
-        admin.setUsername("admin");
-        admin.setRoles(Collections.singleton(Role.ADMIN));
-        userRepository.save(admin);
-        log.info("Admin credentials has been created\n" +
-                "username: admin\n" +
-                "password: admin");
-    }
+//    @PostConstruct
+//    public void initAdmin() {
+//        if (findByUsername("admin") != null) {
+//            log.info("Admin credentials has been created\n" +
+//                    "username: admin\n" +
+//                    "password: admin");
+//            return;
+//        }
+//        User admin = new User();
+//        admin.setActive(true);
+//        admin.setPassword(passwordEncoder.encode("admin"));
+//        admin.setUsername("admin");
+//        admin.setRoles(Collections.singleton(Role.ADMIN));
+//        userRepository.save(admin);
+//        log.info("Admin credentials has been created\n" +
+//                "username: admin\n" +
+//                "password: admin");
+//    }
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService) {
@@ -82,17 +82,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         User save = userRepository.save(user);
 
-        if (StringUtils.hasText(save.getEmail())) {
-            String message = String.format(
-                    "Спасибо %s что выбрали нас!\n" +
-                            "Осталось подтвердить аккаунт чтобы получить доступ ко всем функциям сайта\n" +
-                            "Для активации нужно перейти по этой ссылке: %s/activate/%s" +
-                            "\nЕсли вы не регистрировались на сайте, просто проигнорирйте письмо.",
-                    save.getUsername(), url, save.getActivationCode()
-            );
-            mailService.send(save.getEmail(), "Активация аккаунта", message);
-            log.info("mail has been sent to " + save.getEmail());
-        }
+        sendEmailMessage(save);
 
         return save;
     }
@@ -119,7 +109,51 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public boolean updateProfile(User user, String password, String email) {
+        String userEmail = user.getEmail();
+
+        boolean isEmailChanged = (StringUtils.hasText(email) && userEmail != null && !userEmail.equals(email));
+        boolean isProfileChanged = false;
+
+        if (isEmailChanged) {
+            user.setEmail(email);
+            isProfileChanged = true;
+            user.setActivationCode(UUID.randomUUID().toString());
+        }
+
+        if (StringUtils.hasText(password)) {
+            isProfileChanged = true;
+            user.setPassword(passwordEncoder.encode(password));
+        }
+
+        if (isEmailChanged) {
+            sendEmailMessage(user);
+        }
+
+        if (isProfileChanged) {
+            userRepository.save(user);
+        }
+
+        return isProfileChanged;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
     }
+
+    private void sendEmailMessage(User save) {
+        if (StringUtils.hasText(save.getEmail())) {
+            String message = String.format(
+                    "Спасибо %s что выбрали нас!\n" +
+                            "Осталось подтвердить аккаунт чтобы получить доступ ко всем функциям сайта\n" +
+                            "Для активации нужно перейти по этой ссылке: %s/activate/%s" +
+                            "\nЕсли вы не регистрировались на сайте, просто проигнорирйте письмо.",
+                    save.getUsername(), url, save.getActivationCode()
+            );
+            mailService.send(save.getEmail(), "Активация аккаунта", message);
+            log.info("mail has been sent to " + save.getEmail());
+        }
+    }
+
 }
