@@ -24,9 +24,6 @@ public class User implements UserDetails {
     private String username;
     @NotBlank(message = "Пароль не может быть пустым")
     private String password;
-    @Transient
-    @NotBlank(message = "Подтверждение пароля не может быть пустыми")
-    private String passwordConfirm;
     private boolean active;
     @Email(message = "Введная почта не верна")
     @NotBlank(message = "Почта не может быть пустой")
