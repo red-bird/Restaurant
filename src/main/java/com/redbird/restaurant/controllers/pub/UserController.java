@@ -1,44 +1,65 @@
 package com.redbird.restaurant.controllers.pub;
 
 import com.redbird.restaurant.models.User;
+import com.redbird.restaurant.models.dto.CaptchaResponseDto;
 import com.redbird.restaurant.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import javax.persistence.Transient;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
+import java.util.Collections;
 import java.util.Map;
 
 @Controller
 @RequestMapping
 public class UserController {
 
+    private final static String CAPTCHA_URL = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s";
+
     private final UserService userService;
+    private final RestTemplate restTemplate;
+
+    @Value("${recaptcha.client_secret}")
+    private String client_secret;
+    @Value("${recaptcha.server_secret}")
+    private String server_secret;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RestTemplate restTemplate) {
         this.userService = userService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/registration")
-    public String registration() {
+    public String registration(Model model) {
+        model.addAttribute("key", client_secret);
         return "registration";
     }
 
     @PostMapping("/registration")
     public String addUser(
             @RequestParam("passwordConfirm") String passwordConfirm,
+            @RequestParam("g-recaptcha-response") String captchaResponse,
             @Valid User user,
             BindingResult bindingResult,
             Model model
     ) {
+        String url = String.format(CAPTCHA_URL, server_secret, captchaResponse);
+        CaptchaResponseDto response = restTemplate.postForObject(url, Collections.emptyList(), CaptchaResponseDto.class);
+
+        if (!response.isSuccess()) {
+            model.addAttribute("captchaError", "Подтвердите капчу");
+        }
+
         boolean isConfirmEmpty = !StringUtils.hasText(passwordConfirm);
+
         if (isConfirmEmpty) {
             model.addAttribute("passwordConfirmError", "Подтверждение пароля не может быть пустыми");
         }
@@ -46,20 +67,22 @@ public class UserController {
         if (user.getPassword() != null && passwordConfirm != null
                 && !user.getPassword().equals(passwordConfirm)) {
             model.addAttribute("passwordError", "Пароли различаются");
+            model.addAttribute("key", client_secret);
             return "registration";
         }
 
-        if (isConfirmEmpty || bindingResult.hasErrors()) {
+        if (isConfirmEmpty || bindingResult.hasErrors() || !response.isSuccess()) {
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
 
             model.mergeAttributes(errors);
-
+            model.addAttribute("key", client_secret);
             return "registration";
         }
 
         user = userService.saveUser(user);
         if (user == null) {
             model.addAttribute("usernameError", "Пользователь уже существует");
+            model.addAttribute("key", client_secret);
             return "registration";
         }
         return "redirect:/login";

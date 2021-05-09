@@ -68,6 +68,16 @@
             <input type="checkbox" class="form-check-input">
             <label class="form-check-label" for="rememberMe">Запомнить меня</label>
         </div>
+        <#if isRegisterForm>
+            <div class="col-sm-6">
+                <div class="g-recaptcha" data-sitekey="${key}"></div>
+                <#if captchaError??>
+                    <div class="alert alert-danger" role="alert">
+                        ${captchaError}
+                    </div>
+                </#if>
+            </div>
+        </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div><button type="submit" class="btn btn-primary mb-3">
                 <#if isRegisterForm>Зарегестрироваться<#else>Войти</#if>
