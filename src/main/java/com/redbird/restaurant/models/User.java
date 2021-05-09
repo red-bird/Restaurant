@@ -1,13 +1,13 @@
 package com.redbird.restaurant.models;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,7 +25,8 @@ public class User implements UserDetails {
     @NotBlank(message = "Пароль не может быть пустым")
     private String password;
     @Transient
-    private String password2;
+    @NotBlank(message = "Подтверждение пароля не может быть пустыми")
+    private String passwordConfirm;
     private boolean active;
     @Email(message = "Введная почта не верна")
     @NotBlank(message = "Почта не может быть пустой")

@@ -8,28 +8,67 @@
         <div class="form-group">
             <label class="col-sm-2 col-form-label"> Имя пользователя : </label>
             <div class="col-sm-6">
-                <input type="text" name="username" class="form-control" placeholder="Имя пользователя" />
+                <input class="form-control ${(usernameError??)?string('is-invalid', '')}"
+                       value="<#if user??>${user.username}</#if>"
+                       type="text" name="username"
+                       placeholder="Имя пользователя" />
+                <#if usernameError??>
+                    <div class="invalid-feedback">
+                        ${usernameError}
+                    </div>
+                </#if>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 col-form-label"> Пароль : </label>
             <div class="col-sm-6">
-                <input type="password" name="password" class="form-control" placeholder="Пароль" />
+                <input class="form-control ${(passwordError??)?string('is-invalid', '')}"
+                       type="password"
+                       name="password"
+                       placeholder="Пароль" />
+                <#if passwordError??>
+                    <div class="invalid-feedback">
+                        ${passwordError}
+                    </div>
+                </#if>
             </div>
         </div>
         <#if isRegisterForm>
-        <div class="form-group">
-            <label class="col-sm-2 col-form-label"> Пароль : </label>
-            <div class="col-sm-6">
-                <input type="email" name="email" class="form-control" placeholder="Почта" />
+            <div class="form-group">
+                <label class="col-sm-2 col-form-label"> Повторный пароль : </label>
+                <div class="col-sm-6">
+                    <input class="form-control ${(passwordConfirmError??)?string('is-invalid', '')}"
+                           type="password"
+                           name="passwordConfirm"
+                           placeholder="Введите пароль еще раз" />
+                    <#if passwordConfirmError??>
+                        <div class="invalid-feedback">
+                            ${passwordConfirmError}
+                        </div>
+                    </#if>
+                </div>
             </div>
-        </div>
+            <div class="form-group">
+                <label class="col-sm-2 col-form-label"> Почта : </label>
+                <div class="col-sm-6">
+                    <input class="form-control ${(emailError??)?string('is-invalid', '')}"
+                           value="<#if user??>${user.email}</#if>"
+                           type="email"
+                           name="email"
+                           placeholder="Почта" />
+                    <#if emailError??>
+                        <div class="invalid-feedback">
+                            ${emailError}
+                        </div>
+                    </#if>
+                </div>
+            </div>
         </#if>
         <div class="form-group form-check my-2">
             <input type="checkbox" class="form-check-input">
             <label class="form-check-label" for="rememberMe">Запомнить меня</label>
         </div>
-            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <div><button type="submit" class="btn btn-primary mb-3">
                 <#if isRegisterForm>Зарегестрироваться<#else>Войти</#if>
             </button></div>

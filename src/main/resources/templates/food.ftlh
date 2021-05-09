@@ -3,6 +3,7 @@
 <#include "components/security.ftlh">
 
 <@c.page>
+    ${message?ifExists}
     <#if isAdmin>
         <@f.send />
     </#if>

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -32,25 +31,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Value("${spring.mail.active_url}")
     private String url;
-
-//    @PostConstruct
-//    public void initAdmin() {
-//        if (findByUsername("admin") != null) {
-//            log.info("Admin credentials has been created\n" +
-//                    "username: admin\n" +
-//                    "password: admin");
-//            return;
-//        }
-//        User admin = new User();
-//        admin.setActive(true);
-//        admin.setPassword(passwordEncoder.encode("admin"));
-//        admin.setUsername("admin");
-//        admin.setRoles(Collections.singleton(Role.ADMIN));
-//        userRepository.save(admin);
-//        log.info("Admin credentials has been created\n" +
-//                "username: admin\n" +
-//                "password: admin");
-//    }
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, MailService mailService) {
@@ -71,7 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) {
-        User res = findByUsername(user.getUsername());
+        User res = userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
         if (res != null) {
             log.info("user " + user.getUsername() + "exists");
             return null;

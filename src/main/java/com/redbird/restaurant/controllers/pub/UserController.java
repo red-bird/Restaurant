@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 @RequestMapping
@@ -25,10 +29,23 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Model model) {
+    public String addUser(@Valid User user, BindingResult bindingResult, Model model) {
+        if (user.getPassword() != null && user.getPasswordConfirm() != null
+                && !user.getPassword().equals(user.getPasswordConfirm())) {
+            model.addAttribute("passwordError", "Пароли различаются");
+            return "registration";
+        }
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errors);
+
+            return "registration";
+        }
         user = userService.saveUser(user);
         if (user == null) {
-            model.addAttribute("message", "User exists!");
+            model.addAttribute("usernameError", "Пользователь уже существует");
             return "registration";
         }
         return "redirect:/login";

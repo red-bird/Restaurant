@@ -54,13 +54,10 @@ public class AdminFoodController {
                            Model model,
                            @RequestParam("file") MultipartFile file)
     {
-//        Food food = new Food();
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errorsMap);
-//            food.setPrice(0.0);
             model.addAttribute("food", food);
-//            return "food";
         } else {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
                 File uploadDir = new File(uploadPath);
@@ -81,13 +78,11 @@ public class AdminFoodController {
 
                 food.setFilename(resultFilename);
             }
-//        food.setName(name);
-//        food.setType(type);
-//        food.setDescription(description);
-//        food.setPrice(price);
             log.info("saveFood() input: " + food);
             food = foodService.save(food);
             log.info("saveFood() output: " + food);
+            model.addAttribute("food", null);
+            model.addAttribute("message", "Блюдо было добавлено");
         }
 
         List<Food> foodList = foodService.findAll();
