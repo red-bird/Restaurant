@@ -6,7 +6,7 @@
     </#if>
     <form action="${path}" method="post">
         <div class="form-group">
-            <label class="col-sm-2 col-form-label"> Имя пользователя : </label>
+            <label class="col-sm-2 col-form-label"> Имя пользователя: </label>
             <div class="col-sm-6">
                 <input class="form-control ${(usernameError??)?string('is-invalid', '')}"
                        value="<#if user??>${user.username}</#if>"
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-2 col-form-label"> Пароль : </label>
+            <label class="col-sm-2 col-form-label"> Пароль: </label>
             <div class="col-sm-6">
                 <input class="form-control ${(passwordError??)?string('is-invalid', '')}"
                        type="password"
@@ -35,7 +35,7 @@
         </div>
         <#if isRegisterForm>
             <div class="form-group">
-                <label class="col-sm-2 col-form-label"> Повторный пароль : </label>
+                <label class="col-sm-2 col-form-label"> Повторный пароль: </label>
                 <div class="col-sm-6">
                     <input class="form-control ${(passwordConfirmError??)?string('is-invalid', '')}"
                            type="password"
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 col-form-label"> Почта : </label>
+                <label class="col-sm-2 col-form-label"> Почта: </label>
                 <div class="col-sm-6">
                     <input class="form-control ${(emailError??)?string('is-invalid', '')}"
                            value="<#if user??>${user.email}</#if>"
@@ -65,7 +65,7 @@
             </div>
         </#if>
         <div class="form-group form-check my-2">
-            <input type="checkbox" class="form-check-input">
+            <input type="checkbox" class="form-check-input" name="remember-me">
             <label class="form-check-label" for="rememberMe">Запомнить меня</label>
         </div>
         <#if isRegisterForm>

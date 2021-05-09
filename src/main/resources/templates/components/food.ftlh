@@ -1,5 +1,5 @@
 <#macro menu>
-    <div>Меню:</div>
+    <h4>Меню:</h4>
     <hr>
     <div class="row row-cols-3 row-cols-md-3 g-4">
         <#list foodList as food>
