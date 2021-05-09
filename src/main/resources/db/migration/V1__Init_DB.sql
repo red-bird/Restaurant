@@ -4,9 +4,9 @@ create table foods (
                        id bigserial not null,
                        description varchar(1023),
                        filename varchar(255),
-                       name varchar(255) not null,
+                       name varchar(63) not null,
                        price float8 not null,
-                       type varchar(255),
+                       type varchar(31),
                        primary key (id)
     );
 

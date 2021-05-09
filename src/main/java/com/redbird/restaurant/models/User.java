@@ -1,6 +1,8 @@
 package com.redbird.restaurant.models;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +20,15 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
+    @NotBlank(message = "Имя пользователя не может быть пустым")
     private String username;
+    @NotBlank(message = "Пароль не может быть пустым")
     private String password;
+    @Transient
+    private String password2;
     private boolean active;
+    @Email(message = "Введная почта не верна")
+    @NotBlank(message = "Почта не может быть пустой")
     private String email;
     private String activationCode;
 

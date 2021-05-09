@@ -37,16 +37,40 @@
             <div class="form-group mt-3">
                 <form action="/food/admin" method="post" enctype="multipart/form-data">
                     <div class="form-group mb-1">
-                        <input class="form-control" type="text" name="name" placeholder="Название"/>
+                        <input class="form-control ${(nameError??)?string('is-invalid', '')}"
+                               value="<#if food??>${food.name}</#if>" type="text" name="name" placeholder="Название"/>
+                        <#if nameError??>
+                            <div class="invalid-feedback">
+                                ${nameError}
+                            </div>
+                        </#if>
                     </div>
                     <div class="form-group mb-1">
-                        <input class="form-control" type="text" name="type" placeholder="Кухня" />
+                        <input class="form-control ${(typeError??)?string('is-invalid', '')}"
+                               value="<#if food??>${food.type}</#if>" type="text" name="type" placeholder="Кухня" />
+                        <#if typeError??>
+                            <div class="invalid-feedback">
+                                ${typeError}
+                            </div>
+                        </#if>
                     </div>
                     <div class="form-group mb-1">
-                        <input class="form-control" type="text" name="description" placeholder="Описание" />
+                        <input class="form-control ${(descriptionError??)?string('is-invalid', '')}"
+                               value="<#if food??>${food.description}</#if>" type="text" name="description" placeholder="Описание" />
+                        <#if dascriptionError??>
+                            <div class="invalid-feedback">
+                                ${descriptionError}
+                            </div>
+                        </#if>
                     </div>
                     <div class="form-group mb-1">
-                        <input class="form-control" type="text" name="price" placeholder="Цена" />
+                        <input class="form-control ${(priceError??)?string('is-invalid', '')}"
+                               value="<#if food?? && food.price?? && (food.price > 0) >${food.price}<#else></#if>" type="text" name="price" placeholder="Цена" />
+                        <#if priceError??>
+                            <div class="invalid-feedback">
+                                ${priceError}
+                            </div>
+                        </#if>
                     </div>
                     <div class="mb-3">
                         <label for="formFile" class="form-label">Изображение блюда</label>
