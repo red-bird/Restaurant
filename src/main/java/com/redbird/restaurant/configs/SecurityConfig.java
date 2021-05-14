@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .authorizeRequests().antMatchers("/","/food",
                 "/login","/logout","/registration", "/static/**", "/img/**",
-                "/activate/*").permitAll()
+                "/activate/*", "/restaurants").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/")
                 .and().rememberMe()
