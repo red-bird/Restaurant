@@ -28,6 +28,9 @@
             </ul>
 
             <#if user??>
+                <a class="navbar-brand mr-3" href="/cart">
+                    <img src="/img/special/cart.png" width="40px" height="40px" alt="cart">
+                </a>
                 <div class="navbar-text mr-3">
                     <a class="nav-link" href="/users/profile">${name}</a>
                 </div>

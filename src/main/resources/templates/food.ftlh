@@ -7,5 +7,5 @@
     <#if isAdmin>
         <@f.send />
     </#if>
-    <@f.menu />
+    <@f.menu isAdmin/>
 </@c.page>

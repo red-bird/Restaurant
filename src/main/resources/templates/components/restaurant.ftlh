@@ -1,4 +1,4 @@
-<#macro list>
+<#macro list isAdmin>
     <h4>Список ресторанов:</h4>
     <hr>
     <div class="row row-cols-3 row-cols-md-3 g-4">
@@ -15,6 +15,13 @@
                         <li class="list-group-item">Телефон: ${restaurant.phone}</li>
                         <li class="list-group-item">Рабочее время: ${restaurant.worktime}</li>
                         <li class="list-group-item">Описание: ${restaurant.description}</li>
+                        <#if isAdmin>
+                            <form method="post" action="/restaurants/delete">
+                                <input type="hidden" name="id" value="${restaurant.id}" />
+                                <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                                <button class="btn btn-primary" type="submit">Удалить</button>
+                            </form>
+                        </#if>
                     </ul>
                 </div>
             </div>
@@ -31,7 +38,7 @@
         </a>
         <div class="collapse.show" id="restaurantSend">
             <div class="form-group mt-3">
-                <form action="/restaurants/admin" method="post">
+                <form action="/restaurants" method="post">
                     <div class="form-group mb-1">
                         <input class="form-control ${(addressError??)?string('is-invalid', '')}"
                                value="<#if restaurant??>${restaurant.address}</#if>"

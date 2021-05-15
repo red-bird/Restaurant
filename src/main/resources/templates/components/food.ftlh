@@ -1,4 +1,4 @@
-<#macro menu>
+<#macro menu isAdmin>
     <h4>Меню:</h4>
     <hr>
     <div class="row row-cols-3 row-cols-md-3 g-4">
@@ -17,8 +17,18 @@
                         <li class="list-group-item">Цена: ${food.price}</li>
                     </ul>
                     <div class="card-body">
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
+                        <form method="post" action="/cart">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                            <input type="hidden" name="foodId" value="${food.id}">
+                            <button class="btn btn-primary" type="submit">Добавить в корзину</button>
+                        </form>
+                        <#if isAdmin>
+                            <form method="post" action="/food/delete">
+                                <input type="hidden" name="_csrf" value="${_csrf.token}" />
+                                <input type="hidden" name="id" value="${food.id}">
+                                <button class="btn btn-primary" type="submit">Удалить</button>
+                            </form>
+                        </#if>
                     </div>
                 </div>
             </div>
@@ -35,7 +45,7 @@
         </a>
         <div class="collapse.show" id="foodSend">
             <div class="form-group mt-3">
-                <form action="/food/admin" method="post" enctype="multipart/form-data">
+                <form action="/food" method="post" enctype="multipart/form-data">
                     <div class="form-group mb-1">
                         <input class="form-control ${(nameError??)?string('is-invalid', '')}"
                                value="<#if food??>${food.name}</#if>"

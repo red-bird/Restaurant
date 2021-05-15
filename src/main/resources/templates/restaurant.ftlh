@@ -7,5 +7,5 @@
     <#if isAdmin>
         <@r.send />
     </#if>
-    <@r.list/>
+    <@r.list isAdmin/>
 </@c.page>
