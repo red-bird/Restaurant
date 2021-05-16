@@ -15,7 +15,8 @@ public class Good {
     private Long id;
     @OneToOne
     private Food food;
-    @Min(1)
     private Integer quantity;
     private String client;
+    @ManyToOne
+    private Order order;
 }

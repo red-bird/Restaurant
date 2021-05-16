@@ -1,27 +1,33 @@
 package com.redbird.restaurant.servicesImpl;
 
+import com.redbird.restaurant.models.Good;
 import com.redbird.restaurant.models.Order;
+import com.redbird.restaurant.models.dto.OrderDto;
+import com.redbird.restaurant.repositories.GoodRepository;
 import com.redbird.restaurant.repositories.OrderRepository;
 import com.redbird.restaurant.services.OrderService;
-import com.redbird.restaurant.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private final UserService userService;
     private final OrderRepository orderRepository;
-    private final SimpleDateFormat simpleDateFormat;
+    private final GoodRepository goodRepository;
 
-    public OrderServiceImpl(UserService userService, OrderRepository orderRepository, SimpleDateFormat simpleDateFormat) {
-        this.userService = userService;
+    public OrderServiceImpl(OrderRepository orderRepository, GoodRepository goodRepository) {
+        this.goodRepository = goodRepository;
         this.orderRepository = orderRepository;
-        this.simpleDateFormat = simpleDateFormat;
+    }
+
+    @Override
+    public List<OrderDto> findAllByClient(String client) {
+        List<Order> orders = orderRepository.findAllByClient(client);
+        return getOrderDtos(orders);
     }
 
     @Override
@@ -44,5 +50,22 @@ public class OrderServiceImpl implements OrderService {
         log.info("delete() input: " + id);
         orderRepository.deleteById(id);
         log.info("delete() " + id + " success");
+    }
+
+    private List<OrderDto> getOrderDtos(List<Order> orders) {
+        List<OrderDto> orderDtos = new LinkedList<>();
+        orders.forEach(order -> {
+            List<Good> goods = goodRepository.findAllByOrder(order);
+            orderDtos.add(makeOrderDto(order, goods));
+        });
+        return orderDtos;
+    }
+
+    private OrderDto makeOrderDto(Order order, List<Good> goods) {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setDate(order.getDate());
+        orderDto.setClient(order.getClient());
+        orderDto.setGoods(goods);
+        return orderDto;
     }
 }

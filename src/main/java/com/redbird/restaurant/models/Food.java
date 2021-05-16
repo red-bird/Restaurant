@@ -27,6 +27,4 @@ public class Food {
     @NotNull(message = "Цена должна быть указана")
     private Double price;
     private String filename;
-//    @ManyToMany(mappedBy = "foods", fetch = FetchType.LAZY)
-//    private Set<Order> orders;
 }

@@ -19,7 +19,7 @@
                             <form method="post" action="/restaurants/delete">
                                 <input type="hidden" name="id" value="${restaurant.id}" />
                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
-                                <button class="btn btn-primary" type="submit">Удалить</button>
+                                <button class="btn btn-danger" type="submit">Удалить</button>
                             </form>
                         </#if>
                     </ul>

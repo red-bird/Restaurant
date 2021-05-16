@@ -1,11 +1,13 @@
 package com.redbird.restaurant.services;
 
 import com.redbird.restaurant.models.Order;
+import com.redbird.restaurant.models.dto.OrderDto;
 
 import java.util.List;
 
 public interface OrderService {
-    public List<Order> findAll();
-    public Order save(Order order);
-    public void delete(Long id);
+    List<OrderDto> findAllByClient(String client);
+    List<Order> findAll();
+    Order save(Order order);
+    void delete(Long id);
 }

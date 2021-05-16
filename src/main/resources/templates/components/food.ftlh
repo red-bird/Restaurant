@@ -1,5 +1,5 @@
 <#macro menu isAdmin>
-    <h4>Меню:</h4>
+    <h2 class="text-center">Меню:</h2>
     <hr>
     <div class="row row-cols-3 row-cols-md-3 g-4">
         <#list foodList as food>
@@ -17,16 +17,16 @@
                         <li class="list-group-item">Цена: ${food.price}</li>
                     </ul>
                     <div class="card-body">
-                        <form method="post" action="/cart">
+                        <form method="post" action="/cart/save">
                             <input type="hidden" name="_csrf" value="${_csrf.token}" />
                             <input type="hidden" name="foodId" value="${food.id}">
-                            <button class="btn btn-primary" type="submit">Добавить в корзину</button>
+                            <button class="btn btn-primary mb-1" type="submit">Добавить в корзину</button>
                         </form>
                         <#if isAdmin>
                             <form method="post" action="/food/delete">
                                 <input type="hidden" name="_csrf" value="${_csrf.token}" />
                                 <input type="hidden" name="id" value="${food.id}">
-                                <button class="btn btn-primary" type="submit">Удалить</button>
+                                <button class="btn btn-danger" type="submit">Удалить</button>
                             </form>
                         </#if>
                     </div>
