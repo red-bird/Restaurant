@@ -1,0 +1,5 @@
+version: "3.9"
+
+services:
+  restaurant:
+    image: redbird127/restaurant

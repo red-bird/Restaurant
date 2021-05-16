@@ -73,13 +73,14 @@ public class FoodServiceImpl implements FoodService {
             if (food.get().getFilename() != null) {
                 File file = new File(truePath + food.get().getFilename());
                 if (file.delete()) {
-                    foodRepository.deleteById(id);
-                    log.info("delete() id: " + id);
+                    log.info("delete() img of id: " + id);
                 }
                 else {
-                    log.info("can't delete");
+                    log.info("can't delete im of id: " + id);
                 }
             }
+            foodRepository.deleteById(id);
+            log.info("delete() food id: " + id);
         }
     }
 

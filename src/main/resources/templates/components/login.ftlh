@@ -64,10 +64,12 @@
                 </div>
             </div>
         </#if>
-        <div class="form-group form-check my-2">
-            <input type="checkbox" class="form-check-input" name="remember-me">
-            <label class="form-check-label" for="rememberMe">Запомнить меня</label>
-        </div>
+        <#if !isRegisterForm>
+            <div class="form-group form-check my-2">
+                <input type="checkbox" class="form-check-input" name="remember-me">
+                <label class="form-check-label" for="rememberMe">Запомнить меня</label>
+            </div>
+        </#if>
         <#if isRegisterForm>
             <div class="col-sm-6">
                 <div class="g-recaptcha" data-sitekey="${key}"></div>

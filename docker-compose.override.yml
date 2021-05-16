@@ -1,0 +1,38 @@
+version: '3.9'
+volumes:
+  pg_database:
+
+services:
+  db:
+    image: postgres:13.2-alpine
+    volumes:
+    - pg_database:/var/lib/postgresql/data
+#    restart: on-failure
+    environment:
+      - POSTGRES_PASSWORD=0000
+      - POSTGRES_DB=restaurant
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  restaurant:
+    build: ./.
+    ports:
+      - 8080:8080
+#    restart: on-failure
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DB=restaurant
+      - DB_USER=postgres
+      - DB_PASS=0000
+      - ACTIVE_URL=http://localhost:8080
+      - UPLOAD_PATH=static
+      - EMAIL=
+      - EMAIL_PASSWORD=
+      - SERVER_CAPTCHA_SECRET=
+      - CLIENT_CAPTCHA_SECRET=
+    depends_on:
+      - db
