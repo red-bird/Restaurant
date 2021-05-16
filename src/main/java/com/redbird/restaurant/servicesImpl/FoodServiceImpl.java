@@ -70,13 +70,15 @@ public class FoodServiceImpl implements FoodService {
         Optional<Food> food = findById(id);
         if (food.isPresent()) {
             truePath = path + uploadPath + "/img/";
-            File file = new File(truePath + food.get().getFilename());
-            if (file.delete()) {
-                foodRepository.deleteById(id);
-                log.info("delete() id: " + id);
-            }
-            else {
-                log.info("can't delete");
+            if (food.get().getFilename() != null) {
+                File file = new File(truePath + food.get().getFilename());
+                if (file.delete()) {
+                    foodRepository.deleteById(id);
+                    log.info("delete() id: " + id);
+                }
+                else {
+                    log.info("can't delete");
+                }
             }
         }
     }
