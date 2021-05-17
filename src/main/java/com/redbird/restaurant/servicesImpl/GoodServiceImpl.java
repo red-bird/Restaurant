@@ -42,9 +42,9 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public Optional<Good> save(Good good) {
-        Good res = findByClientAndFood(good.getClient(), good.getFood());
+        Good res = findByClientAndName(good.getClient(), good.getName());
         if (res != null) {
-            log.info(good.getClient() + " already has " + good.getFood().getName() + " good");
+            log.info(good.getClient() + " already has " + good.getName() + " good");
             return Optional.empty();
         }
         Good save = goodRepository.save(good);
@@ -66,8 +66,8 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public Good findByClientAndFood(String client, Food food) {
-        Good good = goodRepository.findFirstByClientAndAndFood(client, food);
+    public Good findByClientAndName(String client, String name) {
+        Good good = goodRepository.findFirstByClientAndName(client, name);
         if (good == null || good.getOrder() != null) {
             return null;
         }
@@ -78,6 +78,9 @@ public class GoodServiceImpl implements GoodService {
     @Override
     public Order makeOrder(String client) {
         List<Good> goods = findAllByClient(client);
+        if (goods.size() < 1) {
+            return null;
+        }
         Order order = new Order();
         order.setClient(client);
         order.setDate(formatter.format(ZonedDateTime.now()));

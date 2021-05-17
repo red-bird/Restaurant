@@ -21,11 +21,11 @@
         <#list goodList as good>
             <div class="col">
                 <div class="card my-3">
-                    <#if good.food.filename??>
-                        <img src="/img/${good.food.filename}" class="card-img-top" alt="${good.food.name}">
+                    <#if good.filename??>
+                        <img src="/img/${good.filename}" class="card-img-top" alt="${good.name}">
                     </#if>
                     <div class="card-body">
-                        <h5 class="card-title text-center">Название: ${good.food.name}</h5>
+                        <h5 class="card-title text-center">Название: ${good.name}</h5>
                         <form action="/cart" method="post">
                             <div class="form-group mb-1 ${(quantityError??)?string('is-invalid', '')}">
                                 <input class="form-control mb-1"

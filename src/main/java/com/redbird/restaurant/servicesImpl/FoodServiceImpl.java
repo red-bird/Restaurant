@@ -48,7 +48,7 @@ public class FoodServiceImpl implements FoodService {
             }
 
             String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + '.' + file.getOriginalFilename();
+            String resultFilename = uuidFile + '.' + file.getOriginalFilename();    
 
             try {
                 file.transferTo(new File(path + uploadPath + "/img/" + resultFilename));

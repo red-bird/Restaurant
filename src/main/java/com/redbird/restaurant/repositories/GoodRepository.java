@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface GoodRepository extends JpaRepository<Good, Long> {
     List<Good> findAllByClient(String client);
-    Good findFirstByClientAndAndFood(String client, Food food);
+    Good findFirstByClientAndName(String client, String name);
     List<Good> findAllByOrder(Order order);
 }

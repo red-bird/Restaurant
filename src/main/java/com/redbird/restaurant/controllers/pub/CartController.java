@@ -49,7 +49,10 @@ public class CartController {
     ) {
         Good good = new Good();
         good.setClient(principal.getName());
-        good.setFood(foodId);
+//        good.setFood(foodId);
+        good.setName(foodId.getName());
+        good.setPrice(foodId.getPrice());
+        good.setFilename(foodId.getFilename());
         good.setQuantity(1);
         goodService.save(good);
         return "redirect:/food";
@@ -84,7 +87,12 @@ public class CartController {
     @PostMapping("order")
     public String makeOrder(Principal principal) {
         Order order = goodService.makeOrder(principal.getName());
-        log.info("Order created: " + order);
+        if (order == null) {
+            log.error("Can't create order, 0 goods");
+        }
+        else {
+            log.info("Order created: " + order);
+        }
         return "redirect:/cart";
     }
 }

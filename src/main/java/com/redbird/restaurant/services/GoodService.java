@@ -16,7 +16,7 @@ public interface GoodService {
 
     void delete(Long id);
 
-    Good findByClientAndFood(String client, Food foodId);
+    Good findByClientAndName(String client, String name);
 
     Order makeOrder(String client);
 }

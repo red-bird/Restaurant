@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>7854eca2-8f41-49fa-bddd-97759fe89984.SCHEMA:restaurant.public</OriginalElement>
+  <nodes>
+    <node x="0.0" y="0.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.spring_session</node>
+    <node x="467.5" y="217.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.user_role</node>
+    <node x="240.0" y="151.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.goods</node>
+    <node x="0.0" y="239.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.spring_session_attributes</node>
+    <node x="249.5" y="0.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.orders</node>
+    <node x="226.0" y="385.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.foods</node>
+    <node x="437.0" y="0.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.users</node>
+    <node x="443.0" y="385.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.restaurants</node>
+    <node x="0.0" y="385.0">7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.flyway_schema_history</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.spring_session_attributes" target="7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.spring_session" relationship="REFERENCES">
+      <point x="0.0" y="-50.5" />
+      <point x="0.0" y="94.5" />
+    </edge>
+    <edge source="7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.user_role" target="7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.users" relationship="REFERENCES">
+      <point x="0.0" y="-39.0" />
+      <point x="0.0" y="83.5" />
+    </edge>
+    <edge source="7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.goods" target="7854eca2-8f41-49fa-bddd-97759fe89984.TABLE:restaurant.public.orders" relationship="REFERENCES">
+      <point x="0.0" y="-94.5" />
+      <point x="0.0" y="50.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8590909090909091" showDependencies="false" x="313.5" y="320.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

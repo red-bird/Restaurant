@@ -7,7 +7,6 @@ services:
     image: postgres:13.2-alpine
     volumes:
     - pg_database:/var/lib/postgresql/data
-#    restart: on-failure
     environment:
       - POSTGRES_PASSWORD=0000
       - POSTGRES_DB=restaurant
@@ -21,7 +20,6 @@ services:
     build: ./.
     ports:
       - 8080:8080
-#    restart: on-failure
     environment:
       - DB_HOST=db
       - DB_PORT=5432

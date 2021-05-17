@@ -13,10 +13,13 @@ public class Good {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    private Food food;
+//    @OneToOne
+//    private Food food;
+    private String name;
+    private Double price;
     private Integer quantity;
     private String client;
+    private String filename;
     @ManyToOne
     private Order order;
 }
